@@ -8,7 +8,6 @@ class SiteRepository implements Repository
 
     /**
      * SiteRepository constructor.
-     *
      */
     public function __construct()
     {
