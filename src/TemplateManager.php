@@ -40,8 +40,8 @@ class TemplateManager
         $this->initTemplateObjects($data);
 
         $replaced = clone($tpl);
-        $replaced->subject = $this->_computeText($replaced->subject, $data);
-        $replaced->content = $this->_computeText($replaced->content, $data);
+        $replaced->subject = $this->_computeText($replaced->getSubject(), $data);
+        $replaced->content = $this->_computeText($replaced->getContent(), $data);
 
         return $replaced;
     }
@@ -70,8 +70,8 @@ class TemplateManager
 
         $this->_user        = (isset($data['user']) and ($data['user'] instanceof User)) ? $data['user'] : $this->context->getCurrentUser();
         $this->_quote       = $data['quote'];
-        $this->_site        = SiteRepository::getInstance()->getById($this->_quote->siteId);
-        $this->_destination = DestinationRepository::getInstance()->getById($this->_quote->destinationId);
+        $this->_site        = SiteRepository::getInstance()->getById($this->_quote->getSiteId());
+        $this->_destination = DestinationRepository::getInstance()->getById($this->_quote->getDestinationId());
     }
 
     /**
@@ -102,7 +102,7 @@ class TemplateManager
      * @return string
      */
     private function getQuoteSummaryHtml() {
-        return $this->renderHtml($this->_quote->id);
+        return $this->renderHtml($this->_quote->getId());
     }
 
     /**
@@ -120,7 +120,7 @@ class TemplateManager
      * @return string
      */
     private function getUserFirstName() {
-        return ucfirst(mb_strtolower($this->_user->firstname));
+        return ucfirst(mb_strtolower($this->_user->getFirstname()));
     }
 
     /**
@@ -129,7 +129,7 @@ class TemplateManager
      * @return string
      */
     private function getQuoteDestinationLink() {
-        $link = $this->_site->url . '/' . $this->_destination->countryName . '/quote/' . $this->_quote->id;
+        $link = $this->_site->getUrl() . '/' . $this->_destination->getCountryName() . '/quote/' . $this->_quote->getId();
         return $link;
     }
 
@@ -139,7 +139,7 @@ class TemplateManager
      * @return string
      */
     private function getQuoteDestinationName() {
-        return $this->_destination->countryName;
+        return $this->_destination->getCountryName();
     }
 
     /**
